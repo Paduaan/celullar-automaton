@@ -17,7 +17,7 @@ public class AutomatoCelular {
 		novaMatriz = matriz.clone();
 
 		// executa 10 gerações do autômato celular
-		for (int g = 0; g < 20; g++) {
+		for (int g = 0; g < 100; g++) {
 			// exibe a matriz na tela
 			System.out.println("Geração " + g + ":");
 			matriz.imprimeMatriz();
@@ -28,22 +28,17 @@ public class AutomatoCelular {
 				for (int j = 0; j < matriz.getColunas(); j++) {
 					int vizinhos = 0;
 					// trecho de código para validar os vizinhos
-					for (int x = -1; x <= 1; x++) {
-						for (int y = -1; y <= 1; y++) {
-							if (x == 0 && y == 0) {
-								continue;
-							}
-							int ii = i + x;
-							int jj = j + y;
-							// verifica se a celulas estão dentro da matriz
-							if (ii < 0 || ii >= matriz.getLinhas() || jj < 0 || jj >= matriz.getColunas()) {
-								continue;
-							}
-							// se o valor da celula central avaliada for 0 e tiver algum vizinho com fogo
-							if (matriz.getValor(ii, jj).getEstado() == Estado.FOGO) {
-								vizinhos = 1;
-							}
+					for (int x = 0; x < Direcao.listaDirecoes.size(); x++) {
+						int ii = i + Direcao.listaDirecoes.get(x)[0];
+						int jj = j + Direcao.listaDirecoes.get(x)[1];
+						// verifica se a celulas estão dentro da matriz
+						if (ii < 0 || ii >= matriz.getLinhas() || jj < 0 || jj >= matriz.getColunas()) {
+							continue;
 						}
+						// se o valor da celula central avaliada for 0 e tiver algum vizinho com fogo
+						if (matriz.getValor(ii, jj).getEstado() == Estado.FOGO) {
+							vizinhos = 1;
+						}						
 					}
 					// compara se o estado atual da celula é fogo
 					if (matriz.getValor(i, j).getEstado() == Estado.FOGO) {
@@ -88,7 +83,7 @@ public class AutomatoCelular {
 										}
 									}
 								}
-								if (veg <= (vegetacao * 2)) {
+								if (veg <= (vegetacao * 3)) {
 									// muda o estado para VEGETACAO e zera o stepAtual da celula com maior prob
 									novaMatriz.getValor(i, j).setEstado(Estado.VEGETACAO);
 									novaMatriz.getValor(i, j).setStepAtual(1);
